@@ -7,8 +7,12 @@ appcompat = "1.7.1"
 material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
+gmsMapsVersion = "19.2.0"
+gmsLocationVersion = "21.3.0"
 
 [libraries]
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "gmsMapsVersion"}
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "gmsLocationVersion"}
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

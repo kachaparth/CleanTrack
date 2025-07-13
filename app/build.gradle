@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.cleantrack"
-        minSdk 24
+        minSdk 26
         targetSdk 36
         versionCode 1
         versionName "1.0"
@@ -29,7 +29,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+    implementation libs.play.services.maps
+    implementation libs.play.services.location
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
