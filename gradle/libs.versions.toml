@@ -9,6 +9,7 @@ activity = "1.10.1"
 constraintlayout = "2.2.1"
 gmsMapsVersion = "19.2.0"
 gmsLocationVersion = "21.3.0"
+androidxCoreVersion = "1.16.0"
 
 [libraries]
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "gmsMapsVersion"}
@@ -20,7 +21,7 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-
+androidx-core = { module = "androidx.core:core", version.ref = "androidxCoreVersion"}
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 

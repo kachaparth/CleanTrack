@@ -1,6 +1,5 @@
 package com.example.cleantrack;
 import android.Manifest;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -15,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -33,6 +34,7 @@ public class LocationService extends Service {
     public static final String ACTION_LOCATION_BROADCAST = "com.example.LOCATION_UPDATE";
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
+    public static boolean isRunning = false;
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
@@ -41,39 +43,45 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        isRunning = true;
         Log.d(TAG, "Service onCreate");
 
         createNotificationChannel();
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Live Location Tracking")
                 .setContentText("Your location is being updated in the background.")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
-                .build();
+                .setOngoing(true);
 
-        startForeground(NOTIFICATION_ID, notification);
+        startForeground(NOTIFICATION_ID, builder.build());
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "Notification permission denied");
+        } else {
+            NotificationManagerCompat.from(this)
+                    .notify(NOTIFICATION_ID, builder.build());
+        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 2000) // 2-second interval
-                .setMinUpdateIntervalMillis(1000) // Minimum 1-second interval
+        locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000) // 2-second interval
+                .setMinUpdateIntervalMillis(2000) // Minimum 1-second interval
                 .build();
 
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
                         Log.d(TAG, "Service received Location: " + location.getLatitude() + ", " + location.getLongitude());
-                        // Broadcast the location to any interested receivers (like MapsActivity)
                         Intent broadcastIntent = new Intent(ACTION_LOCATION_BROADCAST);
                         broadcastIntent.putExtra(EXTRA_LATITUDE, location.getLatitude());
                         broadcastIntent.putExtra(EXTRA_LONGITUDE, location.getLongitude());
-                        sendBroadcast(broadcastIntent);
+                        LocalBroadcastManager.getInstance(LocationService.this).sendBroadcast(broadcastIntent);
                     }
                 }
             }
@@ -90,6 +98,7 @@ public class LocationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        isRunning = false;
         Log.d(TAG, "Service onDestroy");
         fusedLocationClient.removeLocationUpdates(locationCallback); // Stop updates
         Log.d(TAG, "Location updates removed. LocationService stopped.");
@@ -114,16 +123,14 @@ public class LocationService extends Service {
     }
 
     private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel serviceChannel = new NotificationChannel(
-                    CHANNEL_ID,
-                    "Location Service Channel",
-                    NotificationManager.IMPORTANCE_LOW
-            );
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            if (manager != null) {
-                manager.createNotificationChannel(serviceChannel);
-            }
+        NotificationChannel serviceChannel = new NotificationChannel(
+                CHANNEL_ID,
+                "Location Service Channel",
+                NotificationManager.IMPORTANCE_LOW
+        );
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (manager != null) {
+            manager.createNotificationChannel(serviceChannel);
         }
     }
 }
