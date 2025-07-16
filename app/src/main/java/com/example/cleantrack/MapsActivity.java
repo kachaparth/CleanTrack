@@ -3,9 +3,11 @@ package com.example.cleantrack; // 📦 This is your app’s package name (same 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.RequiresPermission;
 import androidx.fragment.app.FragmentActivity; // 🧱 Needed because Map is in a Fragment
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,20 +23,72 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory; // 🎥 For moving/zooming the map
 import com.google.android.gms.maps.GoogleMap; // 🌍 The main map object
 import com.google.android.gms.maps.OnMapReadyCallback; // 📞 Callback triggered when the map is ready
 import com.google.android.gms.maps.SupportMapFragment; // 🧩 The map UI component
 import com.google.android.gms.maps.model.LatLng; // 📍 Represents a coordinate (latitude, longitude)
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Objects;
+
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
     private BroadcastReceiver locationUpdateReceiver;
+    private GeofencingClient geofencingClient;
+    PendingIntent geofencePendingIntent;
 
+    Geofence geofence = new Geofence.Builder()
+            .setRequestId("CleanTrackGeofence")
+            .setCircularRegion(
+                    22.677661,   // latitude
+                    72.882078,   // longitude
+                100    // radius in meters
+            )
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            .setTransitionTypes(
+                    Geofence.GEOFENCE_TRANSITION_ENTER |
+                            Geofence.GEOFENCE_TRANSITION_EXIT
+            )
+            .build();
+
+    private GeofencingRequest getgeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER   | GeofencingRequest.INITIAL_TRIGGER_EXIT) ;
+        builder.addGeofence(geofence);
+        return builder.build();
+    }
+
+//    private GeofencingRequest getgeofencingRequest = new GeofencingRequest.Builder()
+//            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+//            .addGeofence(geofence)
+//            .build();
+
+    private PendingIntent getGeofencePendingIntent() {
+        // Reuse the PendingIntent if we already have it.
+        if (geofencePendingIntent != null) {
+            return geofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
+        // calling addGeofences() and removeGeofences().
+        geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.
+                FLAG_UPDATE_CURRENT);
+        return geofencePendingIntent;
+    }
+
+
+
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +114,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mapFragment != null) {
             mapFragment.getMapAsync(this); // 🔔 Trigger the map load callback when map is ready
         }
+        if (geofencePendingIntent == null) {
+            Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
+
+            geofencePendingIntent = PendingIntent.getBroadcast(
+                    this,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE  // ✅ Add FLAG_MUTABLE or FLAG_IMMUTABLE here
+            );
+        }
+
+
+
+
+        geofencingClient = LocationServices.getGeofencingClient(this);
+
+        geofencingClient.addGeofences(getgeofencingRequest(),getGeofencePendingIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Geofences added
+                        // ...
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to add geofences
+                        // ...
+                    }
+                });
 
     }
+
+
 
     private void requestAllPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -101,7 +188,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         enableMyLocationUI();
         LatLng DDU = new LatLng(22.6796337, 72.8801478);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(DDU, 17));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(DDU, 173));
         Log.d(TAG, "Camera moved to default location: " + DDU.latitude + ", " + DDU.longitude);
         LocalBroadcastManager.getInstance(this).registerReceiver(locationUpdateReceiver,
                 new IntentFilter(LocationService.ACTION_LOCATION_BROADCAST));
