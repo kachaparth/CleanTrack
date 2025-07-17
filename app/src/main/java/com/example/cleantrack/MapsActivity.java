@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -51,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             .setRequestId("CleanTrackGeofence")
             .setCircularRegion(
                     22.677661,   // latitude
-                    72.882078,   // longitude
+                    72.880417,   // longitude
                 100    // radius in meters
             )
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
@@ -63,7 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GeofencingRequest getgeofencingRequest() {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER   | GeofencingRequest.INITIAL_TRIGGER_EXIT) ;
+        builder.setInitialTrigger( Geofence.GEOFENCE_TRANSITION_ENTER |
+                Geofence.GEOFENCE_TRANSITION_EXIT) ;
         builder.addGeofence(geofence);
         return builder.build();
     }
@@ -129,6 +132,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         geofencingClient = LocationServices.getGeofencingClient(this);
+        FusedLocationProviderClient fusedClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                float[] distance = new float[1];
+                Location.distanceBetween(
+                        location.getLatitude(), location.getLongitude(),
+                        22.677661, 72.882078, // geofence center
+                        distance
+                );
+
+                if (distance[0] > 100) { // not inside
+                    geofencingClient.addGeofences(getgeofencingRequest(), getGeofencePendingIntent());
+                } else {
+                    Log.d("GEOFENCE", "User is already inside geofence, not adding");
+                }
+            }
+        });
+
 
         geofencingClient.addGeofences(getgeofencingRequest(),getGeofencePendingIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
@@ -188,7 +209,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         enableMyLocationUI();
         LatLng DDU = new LatLng(22.6796337, 72.8801478);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(DDU, 173));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(DDU, 19));
         Log.d(TAG, "Camera moved to default location: " + DDU.latitude + ", " + DDU.longitude);
         LocalBroadcastManager.getInstance(this).registerReceiver(locationUpdateReceiver,
                 new IntentFilter(LocationService.ACTION_LOCATION_BROADCAST));
