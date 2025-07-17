@@ -52,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Geofence geofence = new Geofence.Builder()
             .setRequestId("CleanTrackGeofence")
             .setCircularRegion(
-                    22.677661,   // latitude
+                    22.678722,   // latitude
                     72.880417,   // longitude
                 100    // radius in meters
             )
