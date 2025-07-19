@@ -49,46 +49,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GeofencingClient geofencingClient;
     PendingIntent geofencePendingIntent;
 
-    Geofence geofence = new Geofence.Builder()
-            .setRequestId("CleanTrackGeofence")
-            .setCircularRegion(
-                    22.678722,   // latitude
-                    72.880417,   // longitude
-                100    // radius in meters
-            )
-            .setExpirationDuration(Geofence.NEVER_EXPIRE)
-            .setTransitionTypes(
-                    Geofence.GEOFENCE_TRANSITION_ENTER |
-                            Geofence.GEOFENCE_TRANSITION_EXIT
-            )
-            .build();
-
-    private GeofencingRequest getgeofencingRequest() {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger( Geofence.GEOFENCE_TRANSITION_ENTER |
-                Geofence.GEOFENCE_TRANSITION_EXIT) ;
-        builder.addGeofence(geofence);
-        return builder.build();
-    }
-
-//    private GeofencingRequest getgeofencingRequest = new GeofencingRequest.Builder()
-//            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-//            .addGeofence(geofence)
-//            .build();
-
-    private PendingIntent getGeofencePendingIntent() {
-        // Reuse the PendingIntent if we already have it.
-        if (geofencePendingIntent != null) {
-            return geofencePendingIntent;
-        }
-        Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
-        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
-        // calling addGeofences() and removeGeofences().
-        geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.
-                FLAG_UPDATE_CURRENT);
-        return geofencePendingIntent;
-    }
-
 
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -167,6 +127,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
 
+    }
+
+    Geofence geofence = new Geofence.Builder()
+            .setRequestId("CleanTrackGeofence")
+            .setCircularRegion(
+                    22.678722,   // latitude
+                    72.880417,   // longitude
+                    100    // radius in meters
+            )
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            .setTransitionTypes(
+                    Geofence.GEOFENCE_TRANSITION_ENTER |
+                            Geofence.GEOFENCE_TRANSITION_EXIT
+            )
+            .build();
+
+    private GeofencingRequest getgeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger( Geofence.GEOFENCE_TRANSITION_ENTER |
+                Geofence.GEOFENCE_TRANSITION_EXIT) ;
+        builder.addGeofence(geofence);
+        return builder.build();
+    }
+
+
+
+    private PendingIntent getGeofencePendingIntent() {
+        // Reuse the PendingIntent if we already have it.
+        if (geofencePendingIntent != null) {
+            return geofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
+        // calling addGeofences() and removeGeofences().
+        geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.
+                FLAG_UPDATE_CURRENT);
+        return geofencePendingIntent;
     }
 
 
