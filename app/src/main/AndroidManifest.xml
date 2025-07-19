@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -25,7 +26,7 @@
         <!-- ✅ Correct meta-data tag -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA-EVTwPb_tfscFt01ZTEpzgLuq9vetKBY" />
+            android:value="${API_KEY}" />
 
         <!-- Launching MapsActivity -->
         <activity

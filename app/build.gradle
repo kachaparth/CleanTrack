@@ -28,6 +28,24 @@ android {
     }
 }
 
+
+def localProps = new Properties()
+def localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localProps.load(new FileInputStream(localPropsFile))
+}
+
+def apiKey = localProps.getProperty("API_KEY", "")
+
+android {
+    defaultConfig {
+        // Inject API key into manifest
+        manifestPlaceholders = [API_KEY: apiKey]
+    }
+}
+
+
+
 dependencies {
     implementation libs.androidx.core
     implementation libs.play.services.maps
