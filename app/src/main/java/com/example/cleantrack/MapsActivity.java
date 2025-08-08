@@ -17,6 +17,8 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Objects;
 
+import schema.model.Truck;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -48,6 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private BroadcastReceiver locationUpdateReceiver;
     private GeofencingClient geofencingClient;
     PendingIntent geofencePendingIntent;
+    private Truck truck;
+    Button btnto;
 
     Geofence geofence = new Geofence.Builder()
             .setRequestId("CleanTrackGeofence")
@@ -106,8 +111,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Log.d(TAG, "Received live Location Update: " + latitude + ", " + longitude);
                     updateMarkerPosition(latitude, longitude); // Update marker on map
                 }
+
+              btnto  = findViewById(R.id.buttonTo);
+
+                btnto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        truck.setActive(true);
+                        Intent intent1 = new Intent(MapsActivity.this, SocketActivity.class);
+                        startActivity(intent1);
+                    }
+                });
+
+                truck = Truck.getInstance();
+                truck.setTruck_id("c102");
+
             }
         };
+
+
+
+
+
+
+
         // 🔁 Get the map fragment from the layout and tell it to notify us when it’s ready
         requestAllPermissions(); // Handle permissions and start service
 
@@ -169,6 +196,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    public Truck getTruck() {
+        return truck;
+    }
 
 
     private void requestAllPermissions() {

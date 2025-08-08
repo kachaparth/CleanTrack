@@ -11,6 +11,7 @@ gmsMapsVersion = "19.2.0"
 gmsLocationVersion = "21.3.0"
 androidxCoreVersion = "1.16.0"
 secretsGradlePlugin = "2.0.1"
+firebaseDatabase = "22.0.0"
 
 [libraries]
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "gmsMapsVersion"}
@@ -23,6 +24,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-core = { module = "androidx.core:core", version.ref = "androidxCoreVersion"}
+firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
