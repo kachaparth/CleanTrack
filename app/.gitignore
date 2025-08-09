@@ -1,1 +1,21 @@
-/build
+# Gradle
+.gradle/
+build/
+*/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration
+local.properties
+app/secrets.properties
+app/local.defaults.properties
+
+# IntelliJ/Android Studio
+.idea/
+*.iml
+
+# Log files
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db

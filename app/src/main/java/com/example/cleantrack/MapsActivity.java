@@ -12,6 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -100,9 +101,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps); // 🖼️ Tells Android: use activity_maps.xml for UI
 
+        try {
+            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(
+                    getPackageName(), PackageManager.GET_META_DATA);
+            Bundle metaData = appInfo.metaData;
+            if (metaData != null) {
+                String apiKey = metaData.getString("com.google.android.geo.API_KEY");
+                Log.d(TAG, "=== API KEY DEBUG ===");
+                Log.d(TAG, "API Key from Manifest: " + apiKey);
+                Log.d(TAG, "API Key length: " + (apiKey != null ? apiKey.length() : 0));
+                Log.d(TAG, "==================");
+            } else {
+                Log.e(TAG, "No meta-data found in AndroidManifest!");
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Error reading manifest: " + e.getMessage());
+        }
+//        Log.d("api", local.defaults.properties.API_KEY);
         btnto  = findViewById(R.id.buttonTo);
 
         btnto.setOnClickListener(new View.OnClickListener() {
