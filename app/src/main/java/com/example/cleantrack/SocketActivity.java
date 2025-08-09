@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.StaticLayout;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -38,12 +39,14 @@ public class SocketActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
 
+    private static final String roomId = "Trucks";
+    private static  final String  role= "TruckDriver";
     private Truck truck;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        truck = Truck.getInstance();
+        truck = new Truck("parth", 0.0, 0.0, true);
         setContentView(R.layout.activity_main); // Make sure this is your layout
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -60,50 +63,26 @@ public class SocketActivity extends AppCompatActivity {
         setupSocket();
 
 
-
-
-
-
-        try {
-            mSocket = IO.socket("https://9ng5x5gh-3030.inc1.devtunnels.ms:3030"); // Replace with your server IP
-            mSocket.connect();
-
-            mSocket.on(Socket.EVENT_CONNECT, args -> {
-                JSONObject data = new JSONObject();
-                try {
-                    data.put("message", "Hello from Truck");
-                    mSocket.emit("messageFromAndroid", data);
-                } catch (JSONException e) {
-
-                    Log.e("error", Objects.requireNonNull(e.getMessage()));
-                }
-            });
-            mSocket.on(Socket.EVENT_DISCONNECT, args -> {
-                Log.d("SocketActivity", "Bye Bye");
-            });
-            mSocket.on("FromUser", data->{
-
-                String message = Arrays.toString(data);
-                Log.e("error", message);
-            });
-
-            mSocket.on("messageFromServer", args -> {
-                String response = (String) args[0];
-                System.out.println("Server: " + response);
-            });
-
-        } catch (URISyntaxException e) {
-            Log.e("error", Objects.requireNonNull(e.getMessage()));
-        }
     }
 
     private void setupSocket() {
+
+        IO.Options opts = new IO.Options();
+        opts.forceNew = true;
+        opts.reconnection = true;
+        opts.timeout = 10000; // 10 second timeout
+        opts.reconnectionAttempts = 5;
+        opts.reconnectionDelay = 1000;
+        opts.transports = new String[]{"websocket", "polling"};
         try {
-            mSocket = IO.socket("http://10.0.2.2:3030"); // Replace with your IP
+
+
+            mSocket = IO.socket("http://10.0.2.2:3030",opts); // Replace with your IP
             mSocket.connect();
 
             mSocket.on(Socket.EVENT_CONNECT, args -> {
-                mSocket.emit("Truck","Hello i am Truck");
+
+//                mSocket.emit("join",roomId,role);
                 Log.d("SocketActivity", "✅ Socket connected");
             });
 
@@ -186,4 +165,6 @@ public class SocketActivity extends AppCompatActivity {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

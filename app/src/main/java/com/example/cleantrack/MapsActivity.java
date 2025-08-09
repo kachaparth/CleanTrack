@@ -51,8 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private BroadcastReceiver locationUpdateReceiver;
     private GeofencingClient geofencingClient;
     PendingIntent geofencePendingIntent;
-    private Truck truck;
-    Button btnto;
+
+    Button btnto,btnToUser;
 
     Geofence geofence = new Geofence.Builder()
             .setRequestId("CleanTrackGeofence")
@@ -102,6 +102,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps); // 🖼️ Tells Android: use activity_maps.xml for UI
+
+        btnto  = findViewById(R.id.buttonTo);
+
+        btnto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent1 = new Intent(MapsActivity.this, SocketActivity.class);
+                startActivity(intent1);
+            }
+        });
+
+        btnToUser = findViewById(R.id.userbtn);
+        btnToUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent1 = new Intent(MapsActivity.this, UserSocketActivity.class);
+                startActivity(intent1);
+            }
+        });
+
+
+
         locationUpdateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -112,19 +136,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     updateMarkerPosition(latitude, longitude); // Update marker on map
                 }
 
-              btnto  = findViewById(R.id.buttonTo);
 
-                btnto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        truck.setActive(true);
-                        Intent intent1 = new Intent(MapsActivity.this, SocketActivity.class);
-                        startActivity(intent1);
-                    }
-                });
 
-                truck = Truck.getInstance();
-                truck.setTruck_id("c102");
+
 
             }
         };
@@ -196,9 +210,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public Truck getTruck() {
-        return truck;
-    }
+
 
 
     private void requestAllPermissions() {

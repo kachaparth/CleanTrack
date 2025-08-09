@@ -1,10 +1,23 @@
 package schema.model;
 
+import java.util.Objects;
+
 public class Truck {
-    private static final Truck instance = new Truck();
+
     String truck_id;
     double lat;
     double log;
+
+    @Override
+    public String toString() {
+        return "Truck{" +
+                "truck_id='" + truck_id + '\'' +
+                ", lat=" + lat +
+                ", log=" + log +
+                ", active=" + active +
+                '}';
+    }
+
     boolean active;
 
     public Truck(String truck_id, double lat, double log, boolean active) {
@@ -17,16 +30,10 @@ public class Truck {
     public Truck() {
     }
 
-    public static Truck getInstance() {
-        return instance;
-    }
     public String getTruck_id() {
         return truck_id;
     }
 
-    public void setTruck_id(String truck_id) {
-        this.truck_id = truck_id;
-    }
 
     public double getLog() {
         return log;
@@ -50,5 +57,18 @@ public class Truck {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true; // same object
+        if (o == null || getClass() != o.getClass()) return false; // not same type
+        Truck truck = (Truck) o;
+        return Objects.equals(truck_id, truck.truck_id); // only compare truck_id
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(truck_id); // hash based on truck_id
     }
 }
