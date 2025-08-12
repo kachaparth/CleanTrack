@@ -1,4 +1,4 @@
-package com.example.cleantrack; // 📦 This is your app’s package name (same as in Manifest)
+package com.example.cleantrack.common; // 📦 This is your app’s package name (same as in Manifest)
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -12,7 +12,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -27,6 +26,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.cleantrack.truck.GeofenceBroadcastReceiver;
+import com.example.cleantrack.truck.LocationService;
+import com.example.cleantrack.R;
+import com.example.cleantrack.truck.SocketActivity;
+import com.example.cleantrack.user.UserSocketActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -41,8 +45,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Objects;
-
-import schema.model.Truck;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {

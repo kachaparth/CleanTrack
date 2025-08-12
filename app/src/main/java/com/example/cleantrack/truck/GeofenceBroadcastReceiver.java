@@ -1,4 +1,4 @@
-package com.example.cleantrack;
+package com.example.cleantrack.truck;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import com.example.cleantrack.R;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 

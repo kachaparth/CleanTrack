@@ -18,10 +18,10 @@
       </SelectionState>
       <SelectionState runConfigName="MapsActivity (1)">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-08-09T19:37:07.767439400Z">
+        <DropdownSelection timestamp="2025-08-12T12:55:42.943243700Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\kacha\.android\avd\User_Mobile.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\kacha\.android\avd\Truck1_Mobile.avd" />
             </handle>
           </Target>
         </DropdownSelection>

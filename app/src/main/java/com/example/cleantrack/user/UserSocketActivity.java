@@ -1,4 +1,4 @@
-package com.example.cleantrack;
+package com.example.cleantrack.user;
 
 import android.Manifest;
 import android.content.Context;
@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.cleantrack.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,16 +32,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import schema.model.Truck;
+import com.example.cleantrack.truck.model.Truck;
 
 public class UserSocketActivity extends AppCompatActivity implements OnMapReadyCallback {
 

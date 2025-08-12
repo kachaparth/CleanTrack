@@ -1,4 +1,4 @@
-package schema.model;
+package com.example.cleantrack.truck.model;
 
 import java.util.Objects;
 

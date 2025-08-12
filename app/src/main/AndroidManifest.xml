@@ -25,7 +25,7 @@
         android:usesCleartextTraffic="true"
 
         >
-        <receiver android:name=".GeofenceBroadcastReceiver"/>
+        <receiver android:name=".truck.GeofenceBroadcastReceiver"/>
         <!-- ✅ Correct meta-data tag -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -33,19 +33,34 @@
 
         <!-- Launching MapsActivity -->
         <activity
-            android:name=".MapsActivity"
+            android:name=".common.MapsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SocketActivity"/>
-        <activity android:name=".UserSocketActivity"/>
+        <activity android:name=".truck.SocketActivity"/>
+        <activity android:name=".user.UserSocketActivity"/>
+        <activity android:name=".user.UserDash"/>
+        <activity android:name=".user.SignUp"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".common.Login"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
         <service
-            android:name=".LocationService"
+            android:name=".truck.LocationService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="location" />

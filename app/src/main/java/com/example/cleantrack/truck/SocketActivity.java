@@ -1,11 +1,10 @@
-package com.example.cleantrack;
+package com.example.cleantrack.truck;
 
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Looper;
-import android.text.StaticLayout;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.cleantrack.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -22,14 +22,11 @@ import com.google.android.gms.location.Priority;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import schema.model.Truck;
+import com.example.cleantrack.truck.model.Truck;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Objects;
-
 
 
 public class SocketActivity extends AppCompatActivity {
@@ -46,7 +43,7 @@ public class SocketActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        truck = new Truck("parth", 0.0, 0.0, true);
+        truck = new Truck("dhairya", 0.0, 0.0, true);
         setContentView(R.layout.activity_main); // Make sure this is your layout
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
