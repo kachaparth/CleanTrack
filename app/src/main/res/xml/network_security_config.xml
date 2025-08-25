@@ -10,7 +10,7 @@
     <!-- Allow HTTP for mobile device testing -->
     <domain-config cleartextTrafficPermitted="true">
         <!-- Add your computer's IP address here -->
-        <domain includeSubdomains="true">10.83.146.112</domain>
+        <domain includeSubdomains="true">10.121.105.112</domain>
 
     </domain-config>
 

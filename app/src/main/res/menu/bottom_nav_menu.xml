@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:title="Profile" />
+    <item
+        android:id="@+id/nav_trucks"
+        android:icon="@drawable/ic_local_shipping_black_24dp"
+        android:title="Trucks" />
+    <item
+        android:id="@+id/nav_dustbin"
+        android:icon="@drawable/ic_delete_black_24dp"
+        android:title="Dustbin" />
+</menu>

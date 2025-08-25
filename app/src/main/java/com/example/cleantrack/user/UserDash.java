@@ -1,35 +1,46 @@
+
 package com.example.cleantrack.user;
 
 import android.os.Bundle;
-import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cleantrack.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserDash extends AppCompatActivity {
 
-    TextView text_userInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_dash_borad);
 
-        text_userInfo = findViewById(R.id.userInfo);
-        // Get stored values from SharedPreferences
-        String role = getSharedPreferences("UserProfiles", MODE_PRIVATE).getString("role", "N/A");
-        String username = getSharedPreferences("UserProfiles", MODE_PRIVATE).getString("username", "N/A");
-        String email = getSharedPreferences("UserProfiles", MODE_PRIVATE).getString("email", "N/A");
+        // Get reference to the BottomNavigationView
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
-        // Prepare the text
-        String userInfo = "Username: " + username + "\n"
-                + "Email: " + email + "\n"
-                + "Role: " + role;
+        // Set up the listener for when a tab is selected
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            // Determine which fragment to load based on the selected menu item
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_profile) {
+                selectedFragment = new ProfileFragment();
+            } else if (itemId == R.id.nav_trucks) {
+                selectedFragment = new TrucksFragment();
+            } else if (itemId == R.id.nav_dustbin) {
+                selectedFragment = new DustbinFragment();
+            }
 
-        // Display in TextView
-        text_userInfo.setText(userInfo);
-
-
+            // Replace the current fragment with the selected one
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, selectedFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            }
+            return true;
+        });
 
     }
 }

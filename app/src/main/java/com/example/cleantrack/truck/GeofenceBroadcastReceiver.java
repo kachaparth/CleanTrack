@@ -11,6 +11,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.example.cleantrack.R;
+import com.example.cleantrack.truck.model.GeofenceTracker;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
@@ -25,22 +26,32 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         }
 
         int transition = event.getGeofenceTransition();
-        String transitionMsg = "";
+        GeofenceTracker tracker = GeofenceTracker.getInstance(context);
 
-        switch (transition) {
-            case Geofence.GEOFENCE_TRANSITION_ENTER:
-                transitionMsg = "You entered the geofence!";
-                break;
-            case Geofence.GEOFENCE_TRANSITION_EXIT:
-                transitionMsg = "You exited the geofence!";
-                break;
-            case Geofence.GEOFENCE_TRANSITION_DWELL:
-                transitionMsg = "Dwelling inside the geofence!";
-                break;
+        for (Geofence geofence : event.getTriggeringGeofences()) {
+            String geofenceId = geofence.getRequestId();
+            String transitionMsg = "";
+
+            switch (transition) {
+                case Geofence.GEOFENCE_TRANSITION_ENTER:
+                    tracker.addGeofence(geofenceId);
+                    transitionMsg = "Truck ENTERED geofence: " + geofenceId;
+                    break;
+
+                case Geofence.GEOFENCE_TRANSITION_EXIT:
+                    tracker.removeGeofence(geofenceId);
+                    transitionMsg = "Truck EXITED geofence: " + geofenceId;
+                    break;
+
+                case Geofence.GEOFENCE_TRANSITION_DWELL:
+                    transitionMsg = "Truck DWELLING in geofence: " + geofenceId;
+                    break;
+            }
+
+            sendNotification(context, transitionMsg);
         }
-
-        sendNotification(context, transitionMsg); // 👈 Call the notification sender
     }
+
 
     private void sendNotification(Context context, String message) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

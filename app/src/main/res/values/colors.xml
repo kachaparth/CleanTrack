@@ -22,8 +22,28 @@
     <color name="error">#F44336</color>
     <color name="success">#4CAF50</color>
 
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#667eea</color>
+    <color name="gradient_end">#764ba2</color>
+    <color name="accent_gradient_start">#ff6b6b</color>
+    <color name="accent_gradient_end">#ee5a24</color>
+    <color name="accent_bright">#ff4757</color>
+
+    <!-- Card and Overlay Colors -->
+    <color name="card_overlay">#FAFFFFFF</color>
+    <color name="text_primary_dark">#2c3e50</color>
+    <color name="text_secondary_light">#7f8c8d</color>
+    <color name="text_on_gradient">#FFFFFF</color>
+
+    <!-- Social Media Colors -->
+    <color name="google_red">#DB4437</color>
+    <color name="facebook_blue">#4267B2</color>
+
     <!-- Material Design Colors -->
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#FF5722</color>
+
+
 </resources>
+

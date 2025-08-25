@@ -68,8 +68,8 @@ public class SignUp extends AppCompatActivity {
         );
 
         Request request = new Request.Builder()
-                .url("https://cleantrack.herokuapp.com/api/auth/signup")
-                .put(body)
+                .url("http://10.0.2.2:3030/api/signup")
+                .post(body)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -111,7 +111,7 @@ public class SignUp extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    Log.e("SignupResponse", "Error: " + response.code());
+                    Log.e("SignupResponse", "Error: " + response.code() + "ErrorMessage: "+  response.body().string());
                 }
 
             }

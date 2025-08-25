@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.cleantrack.R;
+import com.example.cleantrack.truck.model.GeofenceTracker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -24,9 +25,11 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import com.example.cleantrack.truck.model.Truck;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.URISyntaxException;
+import java.util.Set;
 
 
 public class SocketActivity extends AppCompatActivity {
@@ -35,6 +38,7 @@ public class SocketActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
+    private GeofenceTracker tracker;
 
     private static final String roomId = "Trucks";
     private static  final String  role= "TruckDriver";
@@ -42,9 +46,10 @@ public class SocketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main); // Make sure this is your layout
 
         truck = new Truck("dhairya", 0.0, 0.0, true);
-        setContentView(R.layout.activity_main); // Make sure this is your layout
+        tracker = GeofenceTracker.getInstance(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -71,6 +76,8 @@ public class SocketActivity extends AppCompatActivity {
         opts.reconnectionAttempts = 5;
         opts.reconnectionDelay = 1000;
         opts.transports = new String[]{"websocket", "polling"};
+        opts.query = "role=truck";
+
         try {
 
 
@@ -117,10 +124,10 @@ public class SocketActivity extends AppCompatActivity {
                         data.put("truck_id", truck.getTruck_id());
                         data.put("lat", truck.getLat());
                         data.put("log", truck.getLog());
-                        data.put("active", truck.isActive());
+                        data.put("currentGeofences",new JSONArray(tracker.getActiveGeofences()));
 
                         if (mSocket != null && mSocket.connected()) {
-                            mSocket.emit("locationUpdate", data);
+                            mSocket.emit("updateLocation", data);
                             Log.d("SocketActivity", "📤 Sent: " + data.toString());
                         }
 

@@ -1,6 +1,7 @@
 package com.example.cleantrack.common;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,20 @@ public class Login extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = getSharedPreferences("UserProfiles", MODE_PRIVATE);
+
+        String email = prefs.getString("email", null);
+        String userId = prefs.getString("user_id", null);
+        String username = prefs.getString("username", null);
+
+        if (email != null && userId != null && username != null) {
+            // All values exist -> redirect to dashboard
+            Intent intent = new Intent(Login.this, UserDash.class);
+            startActivity(intent);
+            finish(); // close current activity so user can’t go back to login
+        }
+
         setContentView(R.layout.login);
 
         EditEmail = findViewById(R.id.edit_email_login);
@@ -45,7 +60,7 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                  makeLogin();
             }
         });
 
@@ -69,8 +84,8 @@ public class Login extends AppCompatActivity {
         );
 
         Request request = new Request.Builder()
-                .url("https://cleantrack.herokuapp.com/api/auth/signup")
-                .put(body)
+                .url("http://10.121.105.112:3030/api/login")
+                .post(body)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -90,8 +105,10 @@ public class Login extends AppCompatActivity {
                         String role = jsonResponse.optString("role");
                         String username = jsonResponse.optString("username");
                         String email = jsonResponse.optString("email");
+                        String user_id = jsonResponse.optString("user_id");
 
-                        Log.d("SignupResponse", "Role: " + role + ", Username: " + username);
+                        Log.d("SignupResponse", "Role: " + role + ", Username: " + username +
+                                ", email:" + email  + ", user_id: "+user_id);
 
                         // Example: Save to SharedPreferences
                         getSharedPreferences("UserProfiles", MODE_PRIVATE)
@@ -99,6 +116,7 @@ public class Login extends AppCompatActivity {
                                 .putString("role", role)
                                 .putString("username", username)
                                 .putString("email", email)
+                                .putString("user_id",user_id)
                                 .apply();
 
                         // Example: Navigate based on role
