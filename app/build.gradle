@@ -38,6 +38,11 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.firebase.database
+
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.28'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
     implementation('io.socket:socket.io-client:2.0.1') {
