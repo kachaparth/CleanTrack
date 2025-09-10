@@ -58,10 +58,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Button btnto,btnToUser;
 
     Geofence geofence = new Geofence.Builder()
-            .setRequestId("CleanTrackGeofence")
+            .setRequestId("G1")
             .setCircularRegion(
-                    22.678722,   // latitude
-                    72.880417,   // longitude
+                    22.677460,   // latitude
+                    72.882672,   // longitude
                 100    // radius in meters
             )
             .setExpirationDuration(Geofence.NEVER_EXPIRE)

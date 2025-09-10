@@ -62,6 +62,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                   makeLogin();
             }
+
         });
 
     }
@@ -110,6 +111,7 @@ public class Login extends AppCompatActivity {
                         Log.d("SignupResponse", "Role: " + role + ", Username: " + username +
                                 ", email:" + email  + ", user_id: "+user_id);
 
+
                         // Example: Save to SharedPreferences
                         getSharedPreferences("UserProfiles", MODE_PRIVATE)
                                 .edit()
@@ -135,6 +137,8 @@ public class Login extends AppCompatActivity {
                                 finish();
                             }
                         });
+
+
 
                     } catch (Exception e) {
                         e.printStackTrace();

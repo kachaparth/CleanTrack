@@ -81,12 +81,32 @@ public class SocketActivity extends AppCompatActivity {
         try {
 
 
-            mSocket = IO.socket("http://10.0.2.2:3030",opts); // Replace with your IP
+            mSocket = IO.socket("http://10.121.105.112:3030",opts); // Replace with your IP
             mSocket.connect();
 
             mSocket.on(Socket.EVENT_CONNECT, args -> {
 
 //                mSocket.emit("join",roomId,role);
+//                try {
+//                    JSONObject data = new JSONObject();
+//                    data.put("truck_id", "25.00");
+//                    data.put("lat", "speed");
+//                    data.put("lng", "test");
+//                    tracker.addGeofence("G1");
+//                    tracker.addGeofence("G2");
+//                    data.put("currentGeofences",new JSONArray(tracker.getActiveGeofences()));
+//
+//                    for(int i=0;i<=1000;i++)
+//                    {
+////                        Thread.sleep(1000);
+//                        mSocket.emit("updateLocation", data);
+//                    }
+//
+//                }
+//                catch (Exception e)
+//                {
+//                    e.printStackTrace();
+//                }
                 Log.d("SocketActivity", "✅ Socket connected");
             });
 
@@ -95,14 +115,18 @@ public class SocketActivity extends AppCompatActivity {
                 Log.d("SocketActivity", "📨 From Server: " + response);
             });
 
+
+
+
+
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
 
     private void startLocationUpdates() {
-        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
-                .setMinUpdateIntervalMillis(500)
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 2000)
+                .setMinUpdateIntervalMillis(1000)
                 .setMaxUpdateDelayMillis(1000)
                 .build();
 
@@ -119,12 +143,16 @@ public class SocketActivity extends AppCompatActivity {
                     truck.setLog(lng);
 
 
+
                     try {
                         JSONObject data = new JSONObject();
                         data.put("truck_id", truck.getTruck_id());
                         data.put("lat", truck.getLat());
-                        data.put("log", truck.getLog());
+                        data.put("lng", truck.getLog());
                         data.put("currentGeofences",new JSONArray(tracker.getActiveGeofences()));
+
+
+
 
                         if (mSocket != null && mSocket.connected()) {
                             mSocket.emit("updateLocation", data);

@@ -59,6 +59,8 @@ public class UserSocketActivity extends AppCompatActivity implements OnMapReadyC
 
        super.onCreate(savedInstanceState);
        setContentView(R.layout.user_socket);
+        t1 = findViewById(R.id.textView);
+
         setupSocket();
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -68,7 +70,7 @@ public class UserSocketActivity extends AppCompatActivity implements OnMapReadyC
         }
 
 
-        t1 = findViewById(R.id.textView);
+
 
 
     }
@@ -82,18 +84,35 @@ public class UserSocketActivity extends AppCompatActivity implements OnMapReadyC
         opts.reconnectionAttempts = 5;
         opts.reconnectionDelay = 1000;
         opts.transports = new String[]{"websocket", "polling"};
-
+        opts.query = "role=user";
         try {
 
 
-            mSocket = IO.socket("http://10.0.2.2:3030",opts); // Replace with your IP
+            mSocket = IO.socket("http://10.121.105.112:3030",opts); // Replace with your IP
             mSocket.connect();
 
             mSocket.on(Socket.EVENT_CONNECT, args -> {
 
+                try {
+
+                    String user_id = getSharedPreferences("UserProfiles", MODE_PRIVATE).getString("user_id", "N/A");
+
+                    JSONObject data = new JSONObject();
+                    data.put("user_id",user_id);
+
+                    mSocket.emit("getLiveUpdates",data);
+                }
+                catch (Exception e)
+                {
+                    Log.e("error", "❌ Error sending data: "+e);
+                }
+
                 mSocket.emit("join",roomId,role);
                 Log.d("SocketActivity", "✅ Socket connected");
             });
+
+
+
 
             mSocket.on("messageFromServer", args -> {
                 String response = args[0].toString();
@@ -102,30 +121,35 @@ public class UserSocketActivity extends AppCompatActivity implements OnMapReadyC
 
             mSocket.on("TruckLocation", args -> {
                 JSONObject data= (JSONObject) args[0];
-
+                Log.d("TruckLocation", "📨 From Server: " + data.toString());
                 if(data !=null)
                 {
                     try {
+//                        Log.d("TruckObject", data.getString("truck_id"));
+//                        Log.d("TruckObject", Double.toString(data.getDouble("lat")));
+//                        Log.d("TruckObject", Double.toString(data.getDouble("lng")));
                         Truck truck = new Truck(
                                 data.getString("truck_id"),
                                 data.getDouble("lat"),
-                                data.getDouble("log"),
-                                data.getBoolean("active")
+                                data.getDouble("lng"),
+                                true
                         );
 
                         // Remove existing truck with same ID to avoid duplicates
+//                        Log.d("TruckObject", truck.toString());
                         trucks.removeIf(existingTruck -> existingTruck.getTruck_id().equals(truck.getTruck_id()));
                         trucks.add(truck);
 
                         // Update UI on main thread (CRITICAL for Android)
                         runOnUiThread(() -> {
-                            updateTruckMarker(truck); // add/update marker on map
+//                            updateTruckMarker(truck); // add/update marker on map
 
 //                            moveCameraToIncludeAll(); // 👈 zoom map to include all markers
 
                             // update the TextView list
                             StringBuilder sb = new StringBuilder();
                             sb.append("Active Trucks (").append(trucks.size()).append("):\n\n");
+                            Log.d("TruckLocation",sb.toString());
                             trucks.forEach(e -> sb.append("🚛 ").append(e.toString()).append("\n\n"));
                             t1.setText(sb.toString());
                         });
