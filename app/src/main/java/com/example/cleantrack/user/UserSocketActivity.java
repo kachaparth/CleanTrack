@@ -142,9 +142,9 @@ public class UserSocketActivity extends AppCompatActivity implements OnMapReadyC
 
                         // Update UI on main thread (CRITICAL for Android)
                         runOnUiThread(() -> {
-//                            updateTruckMarker(truck); // add/update marker on map
+                            updateTruckMarker(truck); // add/update marker on map
 
-//                            moveCameraToIncludeAll(); // 👈 zoom map to include all markers
+                            moveCameraToIncludeAll(); // 👈 zoom map to include all markers
 
                             // update the TextView list
                             StringBuilder sb = new StringBuilder();
