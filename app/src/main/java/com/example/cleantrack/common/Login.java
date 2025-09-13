@@ -43,12 +43,16 @@ public class Login extends AppCompatActivity {
         String email = prefs.getString("email", null);
         String userId = prefs.getString("user_id", null);
         String username = prefs.getString("username", null);
-
-        if (email != null && userId != null && username != null) {
+        String role = prefs.getString("role",null);
+        if (email!= null && userId!=null && username!=null && role.equals("user")) {
             // All values exist -> redirect to dashboard
             Intent intent = new Intent(Login.this, UserDash.class);
             startActivity(intent);
             finish(); // close current activity so user can’t go back to login
+        } else if (email!=null && userId!=null && username!=null && role.equals("driver") ) {
+            Intent intent = new Intent(Login.this, DriverDash.class);
+            startActivity(intent);
+            finish();
         }
 
         setContentView(R.layout.login);
@@ -86,7 +90,7 @@ public class Login extends AppCompatActivity {
         );
 
         Request request = new Request.Builder()
-                .url("http://127.0.0.1:3030/api/login")
+                .url("http://10.0.2.2:3030/api/login")
                 .post(body)
                 .build();
 

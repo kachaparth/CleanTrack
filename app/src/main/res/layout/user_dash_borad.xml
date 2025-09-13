@@ -7,16 +7,20 @@
 
 
     <!-- This FrameLayout acts as a container for your Fragments. The content of each tab will be displayed here. -->
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="412dp"
-        android:layout_height="638dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- This is the Bottom Navigation Bar with 3 tabs. -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="410dp"
+        android:layout_height="742dp"
+        android:layout_marginTop="35dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="412dp"

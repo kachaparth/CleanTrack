@@ -26,7 +26,7 @@ public class UserDash extends AppCompatActivity {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
-            } else if (itemId == R.id.nav_trucks) {
+            } else if (itemId == R.id.nav_home) {
                 selectedFragment = new TrucksFragment();
             } else if (itemId == R.id.nav_dustbin) {
                 selectedFragment = new DustbinFragment();
