@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -85,18 +86,18 @@ public class Login extends AppCompatActivity {
         );
 
         Request request = new Request.Builder()
-                .url("http://10.121.105.112:3030/api/login")
+                .url("http://127.0.0.1:3030/api/login")
                 .post(body)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("error", "Invalid JSON in Login Error From Server");
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e("error", "Invalid JSON in Login Error From Server", e);
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 // Handle success
                 if (response.isSuccessful()) {
                     String responseData = response.body().string(); // Get the raw JSON string

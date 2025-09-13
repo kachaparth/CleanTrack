@@ -6,14 +6,14 @@ public class Truck {
 
     String truck_id;
     double lat;
-    double log;
+    double lng;
 
     @Override
     public String toString() {
         return "Truck{" +
                 "truck_id='" + truck_id + '\'' +
                 ", lat=" + lat +
-                ", log=" + log +
+                ", log=" + lng +
                 ", active=" + active +
                 '}';
     }
@@ -23,7 +23,7 @@ public class Truck {
     public Truck(String truck_id, double lat, double log, boolean active) {
         this.truck_id = truck_id;
         this.lat = lat;
-        this.log = log;
+        this.lng = log;
         this.active = active;
     }
 
@@ -35,12 +35,12 @@ public class Truck {
     }
 
 
-    public double getLog() {
-        return log;
+    public double getLng() {
+        return lng;
     }
 
-    public void setLog(double log) {
-        this.log = log;
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 
     public double getLat() {

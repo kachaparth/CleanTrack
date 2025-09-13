@@ -29,7 +29,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.URISyntaxException;
-import java.util.Set;
 
 
 public class SocketActivity extends AppCompatActivity {
@@ -81,7 +80,7 @@ public class SocketActivity extends AppCompatActivity {
         try {
 
 
-            mSocket = IO.socket("http://10.121.105.112:3030",opts); // Replace with your IP
+            mSocket = IO.socket("http://127.0.0.1:3030",opts); // Replace with your IP
             mSocket.connect();
 
             mSocket.on(Socket.EVENT_CONNECT, args -> {
@@ -140,7 +139,7 @@ public class SocketActivity extends AppCompatActivity {
                     double lng = location.getLongitude();
 
                     truck.setLat(lat);
-                    truck.setLog(lng);
+                    truck.setLng(lng);
 
 
 
@@ -148,7 +147,7 @@ public class SocketActivity extends AppCompatActivity {
                         JSONObject data = new JSONObject();
                         data.put("truck_id", truck.getTruck_id());
                         data.put("lat", truck.getLat());
-                        data.put("lng", truck.getLog());
+                        data.put("lng", truck.getLng());
                         data.put("currentGeofences",new JSONArray(tracker.getActiveGeofences()));
 
 

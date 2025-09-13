@@ -30,7 +30,6 @@ import com.example.cleantrack.truck.GeofenceBroadcastReceiver;
 import com.example.cleantrack.truck.LocationService;
 import com.example.cleantrack.R;
 import com.example.cleantrack.truck.SocketActivity;
-import com.example.cleantrack.user.UserSocketActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -127,8 +126,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
 
-                Intent intent1 = new Intent(MapsActivity.this, UserSocketActivity.class);
-                startActivity(intent1);
+//                Intent intent1 = new Intent(MapsActivity.this, UserSocketActivity.class);
+//                startActivity(intent1);
             }
         });
 

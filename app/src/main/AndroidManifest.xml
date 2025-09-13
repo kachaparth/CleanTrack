@@ -40,8 +40,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".truck.SocketActivity"/>
-        <activity android:name=".user.UserSocketActivity"/>
+        <activity android:name=".truck.SocketActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+<!--        <activity android:name=".user.UserSocketActivity"/>-->
         <activity android:name=".user.UserDash"/>
         <activity android:name=".user.SignUp"
             android:exported="true">
