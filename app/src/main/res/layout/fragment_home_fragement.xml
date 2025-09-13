@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".truck.fragment.HomeFragement">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Toggle Button Section -->
+    <ToggleButton
+        android:id="@+id/toggle_status"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home Fragement" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/toggle_active"
+        android:textColor="@android:color/white"
+        android:textOff="DEACTIVE"
+        android:textOn="ACTIVE" />
 
-</FrameLayout>
+    <!-- Geofence List Title -->
+    <TextView
+        android:id="@+id/tv_geofence_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Geofences:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- ListView to Display Geofences -->
+    <ListView
+        android:id="@+id/list_geofences"
+        android:layout_width="393dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+
+</LinearLayout>

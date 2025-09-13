@@ -80,7 +80,7 @@ public class SocketActivity extends AppCompatActivity {
         try {
 
 
-            mSocket = IO.socket("http://127.0.0.1:3030",opts); // Replace with your IP
+            mSocket = IO.socket("http://10.0.2.2:3030",opts); // Replace with your IP
             mSocket.connect();
 
             mSocket.on(Socket.EVENT_CONNECT, args -> {

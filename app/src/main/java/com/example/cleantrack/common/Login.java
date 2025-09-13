@@ -65,6 +65,7 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Login","Login button clicked");
                   makeLogin();
             }
 
@@ -90,7 +91,7 @@ public class Login extends AppCompatActivity {
         );
 
         Request request = new Request.Builder()
-                .url("http://10.0.2.2:3030/api/login")
+                .url("http://10.114.50.112:3030/api/login")
                 .post(body)
                 .build();
 
