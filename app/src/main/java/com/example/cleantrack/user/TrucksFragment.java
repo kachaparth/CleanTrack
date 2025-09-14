@@ -256,7 +256,7 @@ public class TrucksFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
         // 17. Use ContextCompat.checkSelfPermission with requireContext()
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
+            mMap.setMyLocationEnabled(false);
         } else {
             // 18. A Fragment has its OWN requestPermissions method. Use it directly.
             // The result will be delivered to this Fragment's onRequestPermissionsResult (which you should override)
