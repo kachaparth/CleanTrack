@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -126,7 +127,7 @@ public class HomeFragement extends Fragment {
         opts.query = "role=truck";
 
         try {
-            mSocket = IO.socket("http://10.114.50.112:3030", opts);
+            mSocket = IO.socket("http://10.121.105.112:3030", opts);
             mSocket.connect();
 
             mSocket.on(Socket.EVENT_CONNECT, args -> {
@@ -155,6 +156,7 @@ public class HomeFragement extends Fragment {
 
 
     private void startLocationUpdates() {
+        Log.d("HomeFragment", "start location update");
         LocationRequest locationRequest = new LocationRequest.Builder(
                 Priority.PRIORITY_HIGH_ACCURACY, 2000)
                 .setMinUpdateIntervalMillis(1000)
@@ -196,8 +198,16 @@ public class HomeFragement extends Fragment {
 
     private void updateGeofenceList() {
         Set<String> activeGeofences = tracker.getActiveGeofences();
-        geofenceAdapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_list_item_1, (List) activeGeofences);
+
+        // Convert Set to List properly
+        List<String> geofenceList = new ArrayList<>(activeGeofences);
+
+        geofenceAdapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_list_item_1,
+                geofenceList
+        );
+
         listGeofences.setAdapter(geofenceAdapter);
     }
 

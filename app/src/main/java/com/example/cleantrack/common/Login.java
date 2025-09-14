@@ -50,8 +50,14 @@ public class Login extends AppCompatActivity {
             startActivity(intent);
             finish(); // close current activity so user can’t go back to login
         } else if (email!=null && userId!=null && username!=null && role.equals("driver") ) {
+
+
+            GeofencesSetupDriver geofencesSetup = new GeofencesSetupDriver(Login.this);
+            geofencesSetup.registerDriverGeofences();
             Intent intent = new Intent(Login.this, DriverDash.class);
             startActivity(intent);
+
+
             finish();
         }
 
@@ -91,7 +97,7 @@ public class Login extends AppCompatActivity {
         );
 
         Request request = new Request.Builder()
-                .url("http://10.114.50.112:3030/api/login")
+                .url("http://10.121.105.112:3030/api/login")
                 .post(body)
                 .build();
 

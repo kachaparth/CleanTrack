@@ -25,7 +25,7 @@
         android:usesCleartextTraffic="true"
 
         >
-        <receiver android:name=".truck.GeofenceBroadcastReceiver"/>
+        <receiver android:name=".common.GeofenceBroadcastReceiver"/>
         <!-- ✅ Correct meta-data tag -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"

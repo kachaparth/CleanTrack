@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-     Allow HTTP for local testing on emulator
     <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.121.105.112</domain>
         <domain includeSubdomains="true">10.0.2.2</domain>
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">127.0.0.1</domain>
     </domain-config>
-
-    <!-- Allow HTTP for mobile device testing -->
-    <domain-config cleartextTrafficPermitted="true">
-        <!-- Add your computer's IP address here -->
-        <domain includeSubdomains="true">10.114.50.112</domain>
-        <domain includeSubdomains="true">10.121.105.247</domain>
-<!--        <domain includeSubdomains="true">127.0.0.1</domain>-->
-    </domain-config>
-
 </network-security-config>

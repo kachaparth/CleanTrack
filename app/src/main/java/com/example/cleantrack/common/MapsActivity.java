@@ -17,8 +17,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,10 +24,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.example.cleantrack.truck.GeofenceBroadcastReceiver;
 import com.example.cleantrack.truck.LocationService;
 import com.example.cleantrack.R;
-import com.example.cleantrack.truck.SocketActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -54,7 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GeofencingClient geofencingClient;
     PendingIntent geofencePendingIntent;
 
-    Button btnto,btnToUser;
+//    Button btnto,btnToUser;
 
     Geofence geofence = new Geofence.Builder()
             .setRequestId("G1")
@@ -109,27 +105,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps); // 🖼️ Tells Android: use activity_maps.xml for UI
 
 
-
-        btnto  = findViewById(R.id.buttonTo);
-
-        btnto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent1 = new Intent(MapsActivity.this, SocketActivity.class);
-                startActivity(intent1);
-            }
-        });
-
-        btnToUser = findViewById(R.id.userbtn);
-        btnToUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-//                Intent intent1 = new Intent(MapsActivity.this, UserSocketActivity.class);
+//        btnto  = findViewById(R.id.buttonTo);
+//
+//        btnto.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent intent1 = new Intent(MapsActivity.this, SocketActivity.class);
 //                startActivity(intent1);
-            }
-        });
+//            }
+//        });
+//
+//        btnToUser = findViewById(R.id.userbtn);
+//        btnToUser.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+////                Intent intent1 = new Intent(MapsActivity.this, UserSocketActivity.class);
+////                startActivity(intent1);
+//            }
+//        });
 
 
 

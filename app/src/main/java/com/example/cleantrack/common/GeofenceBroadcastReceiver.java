@@ -1,4 +1,4 @@
-package com.example.cleantrack.truck;
+package com.example.cleantrack.common;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -19,6 +19,12 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
+
+
+        if (event == null) {
+            Log.e("GEOFENCE", "GeofencingEvent is null");
+            return;
+        }
 
         if (event.hasError()) {
             Log.e("GEOFENCE", "Error: " + event.getErrorCode());
